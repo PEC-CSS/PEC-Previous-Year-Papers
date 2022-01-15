@@ -33,9 +33,9 @@ password = WebDriverWait(driver, 10).until(
     EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='pass']")))
 
 # enter username and password
-email = ""
+email = "naruto.ka.burito@gmail.com"
 # enter your email 
-yourpass = ""
+yourpass = "i rock it"
 # enter your pass
 username.clear()
 username.send_keys(email)
@@ -102,16 +102,19 @@ while (len(nextpage) != 0):
 
     for i in range(0, len(albumsFB)):
         driver.switch_to.window(driver.window_handles[0])
-        driver.get(albumsBasic[i])
-        name = driver.title
+        link = albumsFB[i]
+        driver.get(link)
+
+        sample = driver.find_element_by_xpath('/html[1]/body[1]/div[1]/div[1]/div[1]/div[1]/div[3]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[1]/div[1]/div[2]/span[1]/div[1]/div[1]/div[1]/div[1]/span[1]')
+        name=sample.get_attribute('innerHTML')
+        print("\nGoing to", name)
+
+
+
         # getting the name of the folder from the title of the mbasic page
 
-        link = albumsFB[i]
 
-        print("\nGoing to", name)
-        driver.get(link)
         # going to the actual album
-
         elems2 = driver.find_elements_by_tag_name('a')
         linksarr2 = []
 
@@ -147,16 +150,7 @@ while (len(nextpage) != 0):
         except:
             count+=1;
             print("Path Already Exists. Creating New Path")
-            path = os.getcwd()
-            path = os.path.join(path, name + "-FOLDER "+str(count))
-            print(path)
-            os.mkdir(path)
-            counter2 = 0
-            for image in papers:
-                save_as = os.path.join(
-                    path, name + " - " + str(counter2) + '.jpg')
-                wget.download(image, save_as)
-                counter2 += 1
+            continue
 
 
 
