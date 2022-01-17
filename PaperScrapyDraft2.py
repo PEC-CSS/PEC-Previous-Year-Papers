@@ -19,8 +19,9 @@ chrome_options.add_experimental_option("prefs", prefs)
 # select a webdriver according to your browser
 
 # specify the path to chromedriver.exe (download and save on your computer)
+chpath=""
 driver = webdriver.Chrome(
-    'C:/Users/aulee/chromedriver.exe', chrome_options=chrome_options)
+    chpath, chrome_options=chrome_options)
 
 # open the webpage
 driver.get("https://www.facebook.com")
@@ -33,9 +34,9 @@ password = WebDriverWait(driver, 10).until(
     EC.element_to_be_clickable((By.CSS_SELECTOR, "input[name='pass']")))
 
 # enter username and password
-email = "naruto.ka.burito@gmail.com"
+email = " "
 # enter your email 
-yourpass = "i rock it"
+yourpass = " "
 # enter your pass
 username.clear()
 username.send_keys(email)
