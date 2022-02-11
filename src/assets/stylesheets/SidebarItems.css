@@ -1,0 +1,22 @@
+.sidebarItem{
+    display: flex;
+    border-radius: 0 100px 100px 0;
+    align-items: center;
+}
+
+.sidebarItem:hover{
+    background-color: rgba(0,0,0,0.04);
+}
+
+.sidebarItem__arrow{
+    width: 28px;
+}
+
+.sidebarItem__main{
+    display: flex;
+    align-items: center;
+}
+.sidebarItem__main{
+    font-size: 13px;
+    font-weight: 500;
+}

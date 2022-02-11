@@ -1,0 +1,54 @@
+.newFile{
+    display: flex;
+    align-items: center;
+    padding: 12px 0;
+    padding-left: 20px;
+}
+.newFile__container .MuiSvgIcon-root{
+    font-size: 1.8rem;
+}
+.newFile__container{
+    display: flex;
+    align-items: center;
+    padding: 0px 32px 0px 10px;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 1px 2px 0 rgba(60,64,67,0.302), 0 1px 3px 1px rgba(60,64,67,0.149);
+}
+.newFile__container p{
+    margin-left: 5px;
+}
+.popup{
+    z-index: 5;
+    position: absolute;
+    left: 1%;
+    top:12%;
+    background-color: #f8f9fa;
+    height: 200px;
+    color: black;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+}
+.overlay{
+    width: 100vw;
+    height: 100vh;
+    top:0;
+    left: 0;
+    right:0;
+    bottom: 0;
+    position:fixed;
+}
+.popup>ul{
+    list-style: none;
+    padding: 0;
+}
+li{
+    padding: 5px 200px 5px 30px;
+    font-size: 15px;
+    font-weight: 400;
+    align-items: center;
+    display: flex;
+
+}
+li:hover{
+    background-color: rgb(240, 240, 240);
+}
