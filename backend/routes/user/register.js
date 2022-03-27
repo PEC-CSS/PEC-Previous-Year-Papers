@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Joi = require('joi');
+let Joi = require('joi');
 Joi = Joi.extend(require('joi-phone-number'));
 const bcrypt = require('bcrypt');
 
@@ -47,7 +47,7 @@ router.post('/', async(req, res) => {
         res.send({name: user.name, email:user.email});
     }
     catch(ex) {
-        res.send(ex);
+        res.send(ex.message);
     }
 });
 

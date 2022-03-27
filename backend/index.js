@@ -2,16 +2,17 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const config = require('config');
 const mongoose = require('mongoose');
-const cors = requrie('cors');
+const cors = require('cors');
 
 const login = require('./routes/user/login');
 const register = require('./routes/user/register');
+const course = require('./routes/course/course');
 
 const app = express();
 
 const db = config.get('mongoURI')
 
-mongoose.connect(db, {useCreateIndex: true, useNewUrlParser: true, useUnifiedTopology: true})
+mongoose.connect(db, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('Connected to Database'))
     .catch(err => console.log(err));
 
@@ -26,5 +27,6 @@ app.use(bodyParser.json());
 
 app.use('/api/user/login', login);
 app.use('/api/user/register', register);
+app.use('/api/course', course);
 
 app.listen(5000, () => console.log('Server started at port: 5000'));

@@ -6,14 +6,18 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
-        minlength: Constants.SUBJECT_MIN_LENGTH,
-        maxlength: Constants.SUBJECT_MAX_LENGTH,
+        minlength: Constants.COURSE_MIN_LENGTH,
+        maxlength: Constants.COURSE_MAX_LENGTH,
     },
     courseCode: {
         type: String,
         require: true,
         unique: true,
-        length: Constants.SUBJECTCODE_LENGTH,
+        validate: {
+            validator: function(code) {
+                return code.match(/[A-Z]{3}\d{3}/);
+            }
+        }
     },
     uploadDate: {
         type: Date,

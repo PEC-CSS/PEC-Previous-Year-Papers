@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const config = require('config');
+var mongooseTypePhone = require('mongoose-type-phone');
 
 const Constants = require('../utils/constants');
 
@@ -47,10 +48,14 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
+    phoneNumber: {
+      type: mongoose.SchemaTypes.Phone,
+      required: true,
+    },
 });
 
 userSchema.methods.generateAuthToken = function () {
-    return jwt.sign({name: this.name, email: this.email, username: this.username}, config.get('jwtPrivateKey'));
+    return jwt.sign({ _id: this._id, name: this.name, email: this.email, username: this.username, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
 };
 
 const User = mongoose.model('User', userSchema);

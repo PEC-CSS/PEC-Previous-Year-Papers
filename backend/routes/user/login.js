@@ -7,7 +7,7 @@ const { User } = require('../../models/user');
 const Constants = require('../../utils/constants');
 
 const schema = Joi.object({
-    identifier: Joi.string().min(Constants.IDENTIFIER_MIN_LENGTH).max(Constants.IDENTIFIER_MAX_LENGTH).required(),
+    identifier: Joi.string().min(Constants.USERNAME_MIN_LENGTH).max(Constants.USERNAME_MAX_LENGTH).required(),
     password: Joi.string().min(Constants.PASSWORD_MIN_LENGTH).max(Constants.PASSWORD_MAX_LENGTH).required(),
 });
 
@@ -37,8 +37,8 @@ router.post('/', async(req, res) => {
         const token = user.generateAuthToken();
         return res.json({success: true, token: token});
     }
-    catch(err) {
-        res.send(err);
+    catch(ex) {
+        res.send(ex.message);
     }
 });
 
