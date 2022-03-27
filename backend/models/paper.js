@@ -20,10 +20,10 @@ const paperSchema = new mongoose.Schema({
     }, 
     paperYear: {
         type: Number,
-        default: Date.now,
+        default: new Date().getFullYear(),
         validate: {
             validator: function(v) {
-                return v>=1953 && v<new Date().getFullYear();
+                return v>=1953 && v<=new Date().getFullYear();
             }
         },
     },
@@ -44,12 +44,6 @@ const paperSchema = new mongoose.Schema({
     },
     attachments: {
         type: [mongoose.Schema.Types.ObjectId],
-        validate: {
-            validator : function(v) {
-                return v && v.length >0;
-            }
-        },
-        required: true,
     },
 });
 

@@ -49,7 +49,7 @@ router.delete('/:name', auth, admin, async(req, res) => {
 
         if(!dept) return res.status(400).send("Department doesn't exist!");
 
-        await Course.deleteOne({name: req.params.name });
+        await Department.deleteOne({name: req.params.name });
 
         res.send(dept);
     }
@@ -71,7 +71,7 @@ router.put('/:name', auth, admin, async(req, res) => {
 
         if(!dept) return res.status(400).send("Department doesn't exist!");
 
-        await Course.findOneAndUpdate({name: req.params.name }, {name: req.body.name});
+        dept = await Department.findOneAndUpdate({name: req.params.name }, {name: req.body.name});
 
         res.send(dept);
     }
