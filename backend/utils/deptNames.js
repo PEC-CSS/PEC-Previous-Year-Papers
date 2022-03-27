@@ -1,0 +1,10 @@
+module.exports.CSE = 'Computer Science & Engineering';
+module.exports.AERO = 'Aerospace Engineering';
+module.exports.CIVIL = 'Civil Engineering';
+module.exports.PROD = 'Production & Industrial Engineering';
+module.exports.ECE = 'Electronics & Communication Engineering';
+module.exports.ELEC = 'Electrical Engineering';
+module.exports.MECH = 'Mechanical Engineering';
+module.exports.META = 'Metallurgical and Materials Engineering';
+module.exports.APPS = 'Applied Sciences';
+module.exports.OTHERS = 'Others';
