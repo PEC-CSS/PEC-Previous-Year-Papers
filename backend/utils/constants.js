@@ -10,6 +10,8 @@ const Constants = {
     COURSECODE_LENGTH: 6,
     COURSE_MIN_LENGTH: 10,
     COURSE_MAX_LENGTH: 255,
+    DEPT_MIN_LENGTH: 10, 
+    DEPT_MAX_LENGTH: 255,
 }
 
 module.exports = Constants;

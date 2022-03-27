@@ -33,11 +33,6 @@ const paperSchema = new mongoose.Schema({
         trim: true,
         enum: ["B.Tech", "M.Tech", "Ph.D"],
     },
-    department: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Department',
-        required: true,
-    },
     uploadDate: {
         type: Date,
         default: Date.now,

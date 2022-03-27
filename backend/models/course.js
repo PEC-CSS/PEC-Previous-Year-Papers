@@ -19,6 +19,11 @@ const courseSchema = new mongoose.Schema({
             }
         }
     },
+    department: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Department',
+        required: true,
+    },
     uploadDate: {
         type: Date,
         default: Date.now,
