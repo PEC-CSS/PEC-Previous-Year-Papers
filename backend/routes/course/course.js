@@ -39,9 +39,9 @@ router.post('/', auth, async(req, res) => {
     
         if(course) return res.status(400).send("Course already exists.");
 
-        let dept = await Department.find({name: req.body.department});
+        let dept = await Department.findOne({name: req.body.department});
 
-        if(!dept) dept = await Department.find({name: "Others"})
+        if(!dept) dept = await Department.findOne({name: "Others"})
 
         course = new Course({
             courseName: req.body.courseName,
@@ -115,7 +115,7 @@ router.put('/:id', auth, async(req, res) => {
         }
 
         if(req.body.department) {
-            let dept = await Department.find({name: req.body.department});
+            let dept = await Department.findOne({name: req.body.department});
 
             if(!dept) return res.status(404).send("No such dept. exists!")
 

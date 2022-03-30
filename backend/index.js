@@ -4,8 +4,7 @@ const config = require('config');
 const mongoose = require('mongoose');
 const cors = require('cors');
 
-const login = require('./routes/user/login');
-const register = require('./routes/user/register');
+const auth = require('./routes/user/auth');
 const course = require('./routes/course/course');
 const department = require('./routes/department/department');
 const paper = require('./routes/paper/paper');
@@ -32,10 +31,9 @@ mongoose.connect(mongoURI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(() => console.log('Connected to Database'))
     .catch(err => console.log(err));
 
-app.use('/user/login', login);
-app.use('/user/register', register);
-app.use('/course', course);
-app.use('/department', department);
-app.use('/paper', paper);
+app.use('/api/user', auth);
+app.use('/api/course', course);
+app.use('/api/department', department);
+app.use('/api/paper', paper);
 
 app.listen(5000, () => console.log('Server started at port: 5000'));

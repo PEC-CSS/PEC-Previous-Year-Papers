@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const jwt = require("jsonwebtoken");
 const config = require('config');
-var mongooseTypePhone = require('mongoose-type-phone');
 
 const Constants = require('../utils/constants');
 
@@ -12,14 +11,6 @@ const userSchema = new mongoose.Schema({
       trim: true,
       minlength: Constants.NAME_MIN_LENGTH,
       maxlength: Constants.NAME_MAX_LENGTH,
-    },
-    username: {
-      type: String,
-      required: true,
-      trime: true,
-      minlength: Constants.USERNAME_MIN_LENGTH,
-      maxlength: Constants.USERNAME_MAX_LENGTH,
-      unique: true,
     },
     email: {
       type: String,
@@ -48,14 +39,10 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now,
     },
-    phoneNumber: {
-      type: mongoose.SchemaTypes.Phone,
-      required: true,
-    },
 });
 
 userSchema.methods.generateAuthToken = function () {
-    return jwt.sign({ _id: this._id, name: this.name, email: this.email, username: this.username, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
+    return jwt.sign({ _id: this._id, name: this.name, email: this.email, isAdmin: this.isAdmin}, config.get('jwtPrivateKey'));
 };
 
 const User = mongoose.model('User', userSchema);

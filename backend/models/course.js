@@ -15,7 +15,7 @@ const courseSchema = new mongoose.Schema({
         unique: true,
         validate: {
             validator: function(code) {
-                return code.match(/[A-Z]{3}\d{3}/);
+                return code.match(/[A-Z]{2,3}\d{3,4}/);
             }
         }
     },
