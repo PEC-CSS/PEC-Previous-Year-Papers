@@ -4,7 +4,7 @@ import '../assets/stylesheets/Body.css';
 
 export default function Body() {
     return (
-        <div style={{ width: "80%", marginRight: "auto" }} >
+        <div style={{ width: "80%", margin: "auto" }} >
             <div className='folderHead'>
                 Folders
             </div>

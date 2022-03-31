@@ -1,12 +1,10 @@
 import React from 'react';
-import { Component } from 'react';
 import '../assets/stylesheets/Header.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { HelpOutline } from '@material-ui/icons';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
-import AppsOutlinedIcon from '@mui/icons-material/AppsOutlined';
-import GDLogo from "../assets/images/GD.svg";
+import Login from './Login.js';
 
 
 const Header = () => {
@@ -14,13 +12,13 @@ const Header = () => {
         <div>
             <div className='header'>
                 <div className='header__logo'>
-                    <span>Drive</span>
+                    <span>PEC PAPERS</span>
                 </div>
                 <div className='header__searchContainer'>
 
                     <div className='header__searchBar'>
                         <SearchIcon />
-                        <input type='text' placeholder='Search in drive' />
+                        <input type='text' placeholder='Search in papers' />
                         <ExpandMoreIcon />
                     </div>
                 </div>
@@ -29,7 +27,7 @@ const Header = () => {
                         <HelpOutline />
                         <SettingsOutlinedIcon />
                     </span>
-                    <AppsOutlinedIcon />
+                    <Login />
                 </div>
             </div>
         </div>
