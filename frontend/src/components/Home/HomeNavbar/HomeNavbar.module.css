@@ -1,0 +1,7 @@
+.Special {
+    background-color:rgb(68, 67, 67);
+  }
+  
+  .Special:hover {
+    border: 2px solid green;
+  }
