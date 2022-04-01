@@ -1,28 +1,29 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import classes from './HomeNavbar.module.css';
+import SearchIcon from '@mui/icons-material/Search';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Login from '../../Login/Login.js';
 
-const homeNavbar = props => (
-  <nav className="navbar navbar-expand-lg navbar-dark bg-dark mb-5">
-    <div className="container">
-      <Link to='/' className="navbar-brand">
-        <img width="30" height="30" className="d-inline-block align-top rounded-circle" alt='B'/>OOKGENICS
-      </Link>
-      <button className={"navbar-toggler "+classes.Special} type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarSupportedContent">
-        <div className="ml-auto">
-          <Link to='/login'>
-            <button className={"btn btn-primary mx-2 " +classes.Special}>Login</button>
-          </Link>
-          <Link to='/register'>
-            <button className={"btn btn-success mx-2 " +classes.Special}>Register</button> 
-          </Link>
+const HomeNavbar = () => {
+    return (
+        <div>
+            <div className={classes['header']}>
+                <div className={classes['header__logo']}>
+                    <span>PEC PAPERS</span>
+                </div>
+                <div className={classes['header__searchContainer']}>
+                    <div className={classes['header__searchBar']}>
+                        <SearchIcon />
+                        <input type='text' placeholder='Search in papers' />
+                        <ExpandMoreIcon />
+                    </div>
+                </div>
+                <div className={classes['header__icons']}>
+                    <Login />
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  </nav>
-);
+    )
+}
 
-export default homeNavbar;
+export default HomeNavbar;

@@ -1,13 +1,15 @@
 import React from 'react';
-import classes from './Home.module.css';
 
 import HomeNavbar from './HomeNavbar/HomeNavbar';
+import HomeContent from './HomeContent/HomeContent';
 
-
-const home = props => (
-  <div className={classes.Body}>
-    <HomeNavbar />
-  </div>
+const Home = props => (
+  <React.Fragment>
+      <HomeNavbar />
+      <div style={{ display: "flex" }}>
+        <HomeContent />
+      </div>
+  </React.Fragment>
 );
 
-export default home;
+export default Home;
