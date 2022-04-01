@@ -1,12 +1,15 @@
 import React from 'react';
+import Body from './components/Body';
 import Header from './components/Header'
-import Sidebar from './components/Sidebar';
 
 function App() {
   return (
     <div className="App">
       <Header />
-      <Sidebar />
+      <div style={{ display: "flex" }}>
+        <Body />
+      </div>
+
     </div>
   );
 }
