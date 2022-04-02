@@ -1,33 +1,36 @@
-const mongoose = require('mongoose');
-const { Department } = require('../models/department');
-const { Course } = require('../models/course');
+const { db } = require('../config/firebase-config')
 const courseInfo = require('./courseInfo');
-
-mongoose.connect('mongodb://localhost/pec-previous-year-papers', {useNewUrlParser: true, useUnifiedTopology: true})
-    .then(() => {console.log('Connected to Database'); run();})
-    .catch(err => console.log(err));
 
 const run = async() => {
     for(var i in courseInfo.info) {
-        console.log(i)
         let cc = courseInfo.info[i]['CourseCode'];
         let cn = courseInfo.info[i]['CourseName'];
         let d = courseInfo.info[i]['Department'];
         
-        let dept = await Department.findOne({name: d});
+        let dept =  await db.collection('departments')
+                                .where("name", "==", d)
+                                .get()
 
-        if(!dept) dept = await Department.findOne({name: "Others"})
-        console.log(dept)
-        let course = new Course({
+        if(!dept) dept = await db.collection('departments')
+                                .where("name", "==", "OTHERS")
+                                .get()
+
+        let department
+        dept.forEach(d => {
+            department = d.data().name
+        })
+
+        let course = {
             courseName: cn,
             courseCode: cc,
-            uploadedBy: mongoose.Types.ObjectId('62403504cde0f5b260a295d9'),
             isVerified: true,
-            department: dept._id,
-        });
+            department: department,
+            uploadedBy: 'shivamraina.be18cse@pec.edu.in'
+        };
 
-        // console.log(course)
-
-        await course.save();
+        var doc = db.collection('courses').doc()
+        await doc.set(course)
     }
 }
+
+run()

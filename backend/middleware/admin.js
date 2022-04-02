@@ -1,4 +1,4 @@
-const config = require("config");
+const admin = require('../config/firebase-config')
 
 module.exports = function (req, res, next) {
   // 401 Unauthorized
