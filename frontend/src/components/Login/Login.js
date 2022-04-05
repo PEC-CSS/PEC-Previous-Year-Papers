@@ -1,27 +1,17 @@
-import React from 'react';
-import { useState } from 'react';
-import { signInWithGoogle } from './firebase/firebase';
+import React, {useContext} from 'react';
+import { signInWithGoogle, signOut } from '../../services/firebase';
 import { Button } from '@mui/material';
-import firebase from './firebase/firebase.js';
-import NewFile from './NewFile';
+import { UserContext } from '../../providers/UserProvider';
+import FileUpload from '../FileUpload/FileUpload';
 
 const Login = () => {
-    const [isUserSignedIn, setisUserSignedIn] = useState(false);
-    const signOut = () => {
-        firebase.auth().signOut();
-    }
-    firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-            setisUserSignedIn(true);
-        } else {
-            setisUserSignedIn(false);
-        }
-    })
-    if (isUserSignedIn === true) {
+    const user = useContext(UserContext);
+
+    if (user) {
         return (
             <div style={{ display: "flex" }}>
                 <div style={{ paddingRight: "10px" }}>
-                    <NewFile />
+                    <FileUpload />
                 </div>
                 <div onClick={signOut}>
                     <Button className='signedinButton' variant="contained">

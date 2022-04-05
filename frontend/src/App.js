@@ -1,16 +1,19 @@
 import React from 'react';
-import Body from './components/Body';
-import Header from './components/Header'
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+
+import Home from './components/Home/Home';
+import UserProvider from './providers/UserProvider';
 
 function App() {
-  return (
-    <div className="App">
-      <Header />
-      <div style={{ display: "flex" }}>
-        <Body />
-      </div>
 
-    </div>
+  return (
+    <UserProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path='/' element={<Home />} />
+        </Routes>
+      </BrowserRouter>
+    </UserProvider>
   );
 }
 
