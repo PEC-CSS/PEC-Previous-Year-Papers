@@ -1,0 +1,80 @@
+.newFile {
+    display: flex;
+    align-items: center;
+}
+
+.popup {
+    z-index: 5;
+    position: absolute;
+    border-radius: 20px;
+    border: 2px solid grey;
+    left: 20%;
+    top: 20%;
+    background-color: #f8f9fa;
+    height: 60%;
+    width: 60%;
+    color: black;
+    box-shadow: 0 1px 2px 0 rgb(60 64 67 / 30%), 0 1px 3px 1px rgb(60 64 67 / 15%);
+}
+
+.overlay {
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+    background-color: rgba(128, 128, 128, 0.75);
+}
+
+.popup > ul {
+    list-style: none;
+    padding: 0;
+}
+
+li {
+    padding: 5px 200px 5px 30px;
+    font-size: 15px;
+    font-weight: 400;
+    align-items: center;
+    display: flex;
+}
+
+li:hover {
+    background-color: rgb(240, 240, 240);
+}
+.popupOptions{
+    display: flex;
+    flex-direction: column;
+    width: 75%;
+    margin: auto;
+    font-size: 18px;
+}
+
+.popupOptionSelf{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-top: 20px;
+}
+
+.uploadFile{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 50px;
+    width: 75%;
+    margin: auto;
+}
+button{
+    font-size: 15px;
+    padding: 5px 15px 5px 15px;
+    border-radius: 15px;
+}
+input:hover{
+    cursor: pointer;
+}
+button:hover{
+    cursor: pointer;
+}
