@@ -1,16 +1,22 @@
-const jwt = require('jsonwebtoken');
-const config = require('config');
+const {admin} = require('../config/firebase-config')
 
-module.exports = function (req,res,next){
-    const token = req.header('x-auth-token');
-    if(!token) return res.status(401).send('Access denied! No Token provided!');
+module.exports = async function (req,res,next){
+    const token = req.header('x-auth-token')
+    if(!token) return res.status(401).send('Access denied! No Token provided!')
     
     try{
-        const decoded = jwt.verify(token,config.get('jwtPrivateKey'));
-        req.user = decoded;
-        next();
-    } 
+        const decoded = await admin.auth().verifyIdToken(token.split(' ')[1])
+        const {name, email_verified, email} = decoded
+        
+        if(decoded && email_verified) {
+            req.user = {name: name, email: email}
+            next();
+        }
+        else {
+            res.status(401).send('Unauthorised access')
+        }
+    }
     catch(ex){
-        res.status(400).send('Invalid Token!')
+        res.status(500).send(ex.message)
     }
 }

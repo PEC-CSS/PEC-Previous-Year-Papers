@@ -1,4 +1,3 @@
 {
-    "mongoURI": "mongodb://localhost/pec-previous-year-papers",
-    "jwtPrivateKey": "12345"
+    "mongoURI": "mongodb://localhost/pec-previous-year-papers"
   }

@@ -6,6 +6,7 @@ const departmentSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        uppercase: true,
         minlength: Constants.DEPT_MIN_LENGTH,
         maxlength: Constants.DEPT_MAX_LENGTH,
     }

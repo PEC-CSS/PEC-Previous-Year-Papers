@@ -1,29 +1,34 @@
 import React, {useState, useEffect,  createContext} from "react";
-import { auth } from "../services/firebase"
+import { auth } from "../services/firebase";
 
 export const UserContext = createContext({user: null})
 
 export default (props) => {
-    const [user, setUser] = useState(null)
+    const [user, setUser] = useState(null);
+    const [token, setToken] = useState(null);
+
     useEffect(() => {
-        auth.onAuthStateChanged(async (user) => {
-            if(!user) {
+        auth.onAuthStateChanged(async (userCred) => {
+            if(!userCred) {
                 setUser(null);
-                console.log(localStorage.getItem('accessToken'))
+                setToken(null);
             }
             else {
-                const { displayName, email, emailVerified }  = user;
-                console.log(localStorage.getItem('accessToken'))
+                const { displayName, email, emailVerified }  = userCred;
+                const token = await userCred.getIdToken();
+
                 setUser({
                     displayName,
                     email,
                     emailVerified,
                 })
+
+                setToken(token);
             }
         })
     },[])
 
     return (
-        <UserContext.Provider value={user}>{props.children}</UserContext.Provider>
+        <UserContext.Provider value={{user, token}}>{props.children}</UserContext.Provider>
     )
 }

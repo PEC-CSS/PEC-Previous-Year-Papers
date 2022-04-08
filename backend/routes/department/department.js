@@ -14,7 +14,21 @@ const schema = Joi.object({
 validateDeptInput = (data) => schema.validate(data);
 
 router.get('/', async(req, res) => {
-    res.send(await Department.find({}));
+    try {
+        res.send(await Department.find({}));
+    }
+    catch(ex) {
+        res.send(ex.message);
+    }
+});
+
+router.get('/:id', async(req, res) => {
+    try {
+        res.send(await Department.findOne({_id: req.params.id}));
+    }
+    catch(ex) {
+        res.send(ex.message);
+    }
 });
 
 router.post('/', auth, admin, async(req, res) => {
@@ -40,16 +54,16 @@ router.post('/', auth, admin, async(req, res) => {
     }
 });
 
-router.delete('/:name', auth, admin, async(req, res) => {
+router.delete('/:id', auth, admin, async(req, res) => {
 
     try {
         let dept = await Department.findOne({
-            name: req.params.name,
+            _id: req.params.id,
         });
 
         if(!dept) return res.status(400).send("Department doesn't exist!");
 
-        await Course.deleteOne({name: req.params.name });
+        await Department.deleteOne({ _id: req.params.id });
 
         res.send(dept);
     }
@@ -58,7 +72,7 @@ router.delete('/:name', auth, admin, async(req, res) => {
     }
 });
 
-router.put('/:name', auth, admin, async(req, res) => {
+router.put('/:id', auth, admin, async(req, res) => {
     const { error } = validateDeptInput(req.body);
     if (error) {
         return res.status(400).send(error.details[0].message);
@@ -66,12 +80,12 @@ router.put('/:name', auth, admin, async(req, res) => {
 
     try {
         let dept = await Department.findOne({
-            name: req.params.name,
+            _id: req.params.id,
         });
 
         if(!dept) return res.status(400).send("Department doesn't exist!");
 
-        await Course.findOneAndUpdate({name: req.params.name }, {name: req.body.name});
+        await Department.findOneAndUpdate({ _id: req.params.id }, {name: req.body.name});
 
         res.send(dept);
     }

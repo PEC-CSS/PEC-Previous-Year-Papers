@@ -19,7 +19,7 @@ export default function HomeContent() {
             }
         }
 
-        fetchPaper()
+        // fetchPaper()
     }, [])
 
     return (

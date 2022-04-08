@@ -1,143 +1,201 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import classes from './FileUpload.module.css';
 import { Button } from '@mui/material';
 import axios from "axios";
+import { UserContext } from '../../providers/UserProvider';
+import Dropdown from "./Dropdown/Dropdown";
 
 export default function FileUpload() {
-  const [newfile, setNewFile] = useState(false);
-  const toggleNewFile = () => {
-    setNewFile(!newfile);
-  };
-  const [selectedFile, setselectedFile] = useState();
-  const baseURL = "";
+  const {user, token} = useContext(UserContext);
 
-  const [Department, setDepartment] = useState('click to see options')
-  const [Code, setCode] = useState('click to see options')
-  const [Name, setName] = useState('click to see options')
-  const [Type, setType] = useState('click to see options')
-  const [Year, setYear] = useState('click to see options')
-  const [Semester, setSemester] = useState('click to see options')
-  const [IsDeptSelected, setIsDeptSelected] = useState(false)
+  const paperTypes = ['Mid-Sem', 'End-Sem', 'Assignment', 'Other'];
+  const paperSemesters = [1,2,3,4,5,6,7,8];
+  const paperProgrammes = ["B.Tech", "M.Tech", "Ph.D"];
+
+  const [showUploadForm, setShowUploadForm] = useState(false);
+
+  const [depts, setDepts] = useState([]);
+  const [department, setDepartment] = useState('');
+  const [courses, setCourses] = useState([]);
+  const [courseCode, setCourseCode] = useState('');
+  const [courseCodeDesc, setCourseCodeDesc] = useState('');
+  const [courseName, setCourseName] = useState('');
+  const [paperType, setPaperType] = useState(paperTypes[0]);
+  const [paperYear, setPaperYear] = useState(new Date().getFullYear());
+  const [paperSemester, setPaperSemester] = useState(paperSemesters[0]);
+  const [paperProgramme, setPaperProgramme] = useState(paperProgrammes[0]);
+
+  useEffect(() => {
+    async function getDepts() {
+      const res = await axios.get('/api/department');
+      setDepts(res.data);
+      setDepartment(res.data[0].name)
+    }
+
+    getDepts();
+  }, [])
+
+  useEffect(() => {
+    async function getDeptCourses(departmentId) {
+      const res = await axios.get(`/api/course/department/${departmentId}`);
+      res.data.push({_id: 'Enter Manually', courseName: 'Enter Manually', courseCode: 'Enter Manually'})
+      setCourses(res.data);
+      setCourseCode(res.data[0].courseCode);
+      setCourseName(res.data[0].courseName);
+    }
+
+    if(department) {
+      const dept = depts.find(el => el.name === department);
+      getDeptCourses(dept._id);
+    }
+  }, [department])
+
+  const [selectedFile, setselectedFile] = useState();
+  
   const handleDepartment = (event) => {
+    event.preventDefault();
     setDepartment(event.target.value);
-    if (event.target.value !== 'click to see options') {
-      setIsDeptSelected(true)
-    } else {
-      setIsDeptSelected(false)
+  }
+
+  const handleCourseCode = (event) => {
+    event.preventDefault();
+    setCourseCode(event.target.value);
+
+    if(event.target.value === 'Enter Manually') {
+      setCourseName('');
+    }
+    else {
+      const c = courses.filter(e => e.courseCode === event.target.value);
+      setCourseName(c[0].courseName);
     }
   }
-  const handleCode = (event) => {
-    setCode(event.target.value);
+
+  const handleCourseCodeDesc = (event) => {
+    event.preventDefault();
+    setCourseCodeDesc(event.target.value);
   }
-  const handleName = (event) => {
-    setName(event.target.value);
+
+  const handleCourseName = (event) => {
+    event.preventDefault();
+    setCourseName(event.target.value);
   }
-  const handleType = (event) => {
-    setType(event.target.value);
+
+  const handlePaperType = (event) => {
+    event.preventDefault();
+    setPaperType(event.target.value);
   }
-  const handleYear = (event) => {
-    setYear(event.target.value);
+
+  const handlePaperYear = (event) => {
+    event.preventDefault();
+    setPaperYear(event.target.value);
   }
-  const handleSemester = (event) => {
-    setSemester(event.target.value);
+
+  const handlePaperSemester = (event) => {
+    event.preventDefault();
+    setPaperSemester(event.target.value);
   }
+
+  const handlePaperProgramme = (event) => {
+    event.preventDefault();
+    setPaperProgramme(event.target.value);
+  }
+
   const changeFileHandler = (event) => {
     setselectedFile(event.target.files[0])
   }
-  const handleFileSubmission = () => {
-    const formdata = new FormData();
-    formdata.append('file', selectedFile)
-    console.log(formdata)
-    axios.post(
-      baseURL, formdata
-    ).then((response) => {
-      console.log(response)
-    })
-  }
-  const options = [
-    "click to see options",
-    "1212",
-    "21212",
-    "2121"
-  ];
-  const Dropdown = ({ label, value, options, onChange, active }) => {
-    return (
-      <div className={classes["popupOptionSelf"]}>
-        {label}
-        <select style={{ width: "200px", borderRadius: "10px" }} value={value} onChange={onChange}>
 
-          {active && options.map((option) => {
-            return (
-              <option key={option} value={option}>{option}</option>
-            )
-          })}
-        </select>
-      </div>
-    )
-  };
+  const handleFileSubmission = async () => {
+
+    const body = {
+      courseName: courseName,
+      courseCode: courseCode === 'Enter Manually' ? courseCodeDesc : courseCode,
+      paperYear: paperYear,
+      paperSemester: paperSemester,
+      paperType: paperType,
+      paperProgramme: paperProgramme,
+    }
+    
+    try {
+      let res = await axios.post('/api/paper', body, {headers: {'x-auth-token': 'Bearer '+token}});
+      const formdata = new FormData();
+      formdata.append('files', selectedFile);
+      formdata.append('id', res.data._id);
+      res = await axios.post('/api/paper/upload', formdata, {headers: {'x-auth-token': 'Bearer '+token}});
+      console.log(res);
+    }
+    catch(ex) {
+      console.log(ex);
+    }
+  }
+  
   return (
     <div>
       <div className={classes["newFile"]}>
-        <Button onClick={toggleNewFile} className={classes['signedinButton']} variant="contained">
+        <Button onClick={() => setShowUploadForm(!showUploadForm)} className={classes['signedinButton']} variant="contained">
           Upload File
         </Button>
-        {newfile && (
+        {showUploadForm && (
           <>
             <div className={classes["popup"]}>
               <div className={classes["popupOptions"]}>
                 <Dropdown
                   onChange={handleDepartment}
-                  options={options}
-                  value={Department}
+                  options={depts}
+                  value={department}
                   label="Department"
-                  active={true}
                 />
                 <Dropdown
-                  onChange={handleCode}
-                  options={options}
-                  value={Code}
-                  label="Code"
-                  active={IsDeptSelected}
+                  onChange={handleCourseCode}
+                  onDescChange={handleCourseCodeDesc}
+                  options={courses}
+                  value={courseCode}
+                  courseCodeDesc={courseCodeDesc}
+                  courseCode={courseCode}
+                  label="Course Code"
                 />
                 <Dropdown
-                  onChange={handleName}
-                  options={options}
-                  value={Name}
+                  onChange={handleCourseName}
+                  options={courses}
+                  value={courseName}
+                  courseCode={courseCode}
                   label="Course Name"
-                  active={IsDeptSelected}
                 />
                 <Dropdown
-                  onChange={handleType}
-                  options={options}
-                  value={Type}
-                  label="Type"
-                  active={IsDeptSelected}
+                  onChange={handlePaperType}
+                  options={paperTypes}
+                  value={paperType}
+                  label="Paper Type"
                 />
                 <Dropdown
-                  onChange={handleYear}
-                  options={options}
-                  value={Year}
-                  label="Year"
-                  active={IsDeptSelected}
+                  onChange={handlePaperYear}
+                  options={null}
+                  value={paperYear}
+                  label="Paper Year"
                 />
                 <Dropdown
-                  onChange={handleSemester}
-                  options={options}
-                  value={Semester}
-                  label="Semester"
-                  active={IsDeptSelected}
+                  onChange={handlePaperSemester}
+                  options={paperSemesters}
+                  value={paperSemester}
+                  label="Paper Semester"
                 />
-
-              </div>
-              <div className={classes["uploadFile"]}>
-                <input label="please upload the file here" type="file" name="file" onChange={changeFileHandler} />
-                <div style={{ paddingTop: "25px" }}>
-
-                  <button onClick={handleFileSubmission} >submit</button>
+                <Dropdown
+                  onChange={handlePaperProgramme}
+                  options={paperProgrammes}
+                  value={paperProgramme}
+                  label="Paper Programme"
+                />
+                <div className={classes['fileUpload']}>
+                  <div className={classes['fileLabel']}>
+                    <label>Upload Paper <br /> (Please upload a single pdf file of only this paper)</label>
+                  </div>
+                  <div className={classes['fileUploader']}>
+                    <input label="please upload the file here" type="file" name="file" onChange={changeFileHandler} />
+                    <Button variant="contained" color="error" style={{marginTop: '40px'}} onClick={handleFileSubmission}>Upload</Button>
+                  </div>
                 </div>
               </div>
             </div>
-            <div onClick={toggleNewFile} className={classes['overlay']}></div>
+            <div onClick={() => setShowUploadForm(!showUploadForm)} className={classes['overlay']}></div>
           </>
         )}
       </div>

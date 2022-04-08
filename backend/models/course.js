@@ -6,16 +6,21 @@ const courseSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true,
+        uppercase: true,
         minlength: Constants.COURSE_MIN_LENGTH,
         maxlength: Constants.COURSE_MAX_LENGTH,
     },
     courseCode: {
         type: String,
         require: true,
+        trim: true,
         unique: true,
+        uppercase: true,
         validate: {
             validator: function(code) {
-                return code.match(/[A-Z]{3}\d{3}/);
+                if (code.match(/[A-Z]{3}\d{3}/)) return true;
+                else if (code.match(/[A-Z]{2}\d{4}/)) return true;
+                return false;
             }
         }
     },
@@ -29,8 +34,9 @@ const courseSchema = new mongoose.Schema({
         default: Date.now,
     },
     uploadedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        trim: true,
+        lowercase: true,
         required: true,
     },
     isVerified: {

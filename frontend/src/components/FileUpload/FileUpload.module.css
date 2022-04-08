@@ -44,19 +44,13 @@ li {
 li:hover {
     background-color: rgb(240, 240, 240);
 }
+
 .popupOptions{
     display: flex;
     flex-direction: column;
     width: 75%;
     margin: auto;
     font-size: 18px;
-}
-
-.popupOptionSelf{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    padding-top: 20px;
 }
 
 .uploadFile{
@@ -67,14 +61,35 @@ li:hover {
     width: 75%;
     margin: auto;
 }
+
 button{
     font-size: 15px;
     padding: 5px 15px 5px 15px;
     border-radius: 15px;
 }
+
 input:hover{
     cursor: pointer;
 }
+
 button:hover{
     cursor: pointer;
+}
+
+.fileUpload {
+   display: flex;
+   margin: 0;
+   padding: 0;
+   margin-top: 20px;
+   flex-direction: row;
+}
+
+.fileLabel {
+    width: 300px;
+}
+
+.fileUploader {
+    align-content: space-around;
+    align-items: center;
+    margin-left: 100px;
 }

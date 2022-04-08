@@ -18,8 +18,6 @@ const googleProvider = new firebase.auth.GoogleAuthProvider()
 
 export const signInWithGoogle = () => {
     auth.signInWithPopup(googleProvider).then((res) => {
-        const token = res.credential.accessToken;
-        localStorage.setItem('accessToken', token);
         console.log("Logged In");
     }).catch((error) => {
         console.log(error);
@@ -28,9 +26,8 @@ export const signInWithGoogle = () => {
 
 export const signOut = () => {
     auth.signOut().then(()=> {
-        localStorage.removeItem('accessToken');
         console.log('Logged Out');
     }).catch((error) => {
         console.log(error.message);
     })
-  }
+}

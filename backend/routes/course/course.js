@@ -16,8 +16,32 @@ const schema = Joi.object({
 validateCourseInput = (data) => schema.validate(data);
 
 router.get('/', async(req, res) => {
-    res.send(await Course.find({}));
+    try {
+        res.send(await Course.find({}));
+    }
+    catch(ex) {
+        res.send(ex.message);
+    }
 });
+
+router.get('/:id', async(req, res) => {
+    try {
+        res.send(await Course.findOne({_id: req.params.id}));
+    }
+    catch(ex) {
+        res.send(ex.message);
+    }
+});
+
+router.get('/department/:id', async(req, res) => {
+    try {
+        res.send(await Course.find({department: req.params.id}).select({'_id':1, 'courseName':1, 'courseCode':1}));
+    }
+    catch(ex) {
+        res.send(ex.message);
+    }
+
+})
 
 router.post('/', auth, async(req, res) => {
     const { error } = validateCourseInput(req.body);
@@ -37,7 +61,7 @@ router.post('/', auth, async(req, res) => {
             ]
         });
     
-        if(course) return res.status(400).send("Course already exists.");
+        if(course) return res.status(400).json({msg: "Course already exists.", course: course});
 
         let dept = await Department.find({name: req.body.department});
 
@@ -46,7 +70,7 @@ router.post('/', auth, async(req, res) => {
         course = new Course({
             courseName: req.body.courseName,
             courseCode: req.body.courseCode,
-            uploadedBy: req.user._id,
+            uploadedBy: req.body.uploadedBy,
             isVerified: req.user.isAdmin,
             department: dept._id,
         });
@@ -69,8 +93,7 @@ router.delete('/:id', auth, async(req, res) => {
         let course = await Course.findById(id); 
         if(!course) return res.status(404).send("The Course with the given id is not found!");
 
-        const userid = req.user._id;
-        if(!req.user.isAdmin && (userid.toString() !== course.uploadedBy.toString() || course.isVerified !== false)) 
+        if(!req.user.isAdmin && (req.user.email !== course.uploadedBy || course.isVerified !== false)) 
             return res.status(403).send('Access Denied');
 
         await Course.deleteOne({_id: id });
@@ -89,8 +112,7 @@ router.put('/:id', auth, async(req, res) => {
         let course = await Course.findById(id); 
         if(!course) return res.status(404).send("The Course with the given id is not found!");
 
-        const userid = req.user._id;
-        if(!req.user.isAdmin && (userid.toString() !== course.uploadedBy.toString() || course.isVerified !== false)) 
+        if(!req.user.isAdmin && (req.user.email !== course.uploadedBy || course.isVerified !== false)) 
             return res.status(403).send('Access Denied');
 
         if(req.body.courseName) {
@@ -110,8 +132,8 @@ router.put('/:id', auth, async(req, res) => {
             course.set({ courseCode: req.body.courseCode, runValidators: true });
         }
 
-        if(req.body.verify && req.user.isAdmin) {
-            course.set({ isVerified: req.body.verify });
+        if(req.body.isVerified && req.user.isAdmin) {
+            course.set({ isVerified: req.body.isVerified });
         }
 
         if(req.body.department) {

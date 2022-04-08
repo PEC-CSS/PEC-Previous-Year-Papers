@@ -23,11 +23,11 @@ const paperSchema = new mongoose.Schema({
         default: Date.now,
         validate: {
             validator: function(v) {
-                return v>=1953 && v<new Date().getFullYear();
+                return v>=1953 && v<=new Date().getFullYear();
             }
         },
     },
-    programme: {
+    paperProgramme: {
         type: String,
         default: "B.Tech",
         trim: true,
@@ -38,18 +38,13 @@ const paperSchema = new mongoose.Schema({
         default: Date.now,
     },
     uploadedBy: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        trim: true,
+        lowercase: true,
         required: true,
     },
     attachments: {
-        type: [mongoose.Schema.Types.ObjectId],
-        validate: {
-            validator : function(v) {
-                return v && v.length >0;
-            }
-        },
-        required: true,
+        type: [mongoose.Schema.Types.ObjectId]
     },
 });
 

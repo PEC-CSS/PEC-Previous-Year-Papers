@@ -5,7 +5,7 @@ import { UserContext } from '../../providers/UserProvider';
 import FileUpload from '../FileUpload/FileUpload';
 
 const Login = () => {
-    const user = useContext(UserContext);
+    const {user} = useContext(UserContext);
 
     if (user) {
         return (
