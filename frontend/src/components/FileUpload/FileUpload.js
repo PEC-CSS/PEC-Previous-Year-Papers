@@ -107,14 +107,15 @@ export default function FileUpload() {
   const handleFileSubmission = async () => {
 
     const body = {
-      courseName: courseName,
+      department: department,
+      courseName: courseName.toUpperCase(),
       courseCode: courseCode === 'Enter Manually' ? courseCodeDesc : courseCode,
       paperYear: paperYear,
       paperSemester: paperSemester,
       paperType: paperType,
       paperProgramme: paperProgramme,
     }
-    
+
     try {
       let res = await axios.post('/api/paper', body, {headers: {'x-auth-token': 'Bearer '+token}});
       const formdata = new FormData();

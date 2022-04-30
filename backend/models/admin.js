@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const Constants = require('../utils/constants');
 
-const userSchema = new mongoose.Schema({
+const adminSchema = new mongoose.Schema({
     name: {
       type: String,
       required: true,
@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     }
 });
 
-const User = mongoose.model('User', userSchema);
+const Admin = mongoose.model('Admin', adminSchema);
 
-module.exports.User = User;
-module.exports.userSchema = userSchema;
+module.exports.Admin = Admin;
+module.exports.adminSchema = adminSchema;

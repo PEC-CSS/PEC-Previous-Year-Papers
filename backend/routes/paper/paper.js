@@ -9,14 +9,18 @@ const Grid = require('gridfs-stream');
 const path = require('path')
 const crypto = require('crypto');
 const mongodb = require('mongodb');
+const fs = require('fs');
 
 const auth = require("../../middleware/auth");
 const { Paper } = require("../../models/paper");
 const { Course } = require("../../models/course");
+const { Admin } = require("../../models/admin");
+const { Department } = require("../../models/department");
 
 const Constants = require('../../utils/constants');
 
 const schema = Joi.object({
+    department: Joi.string().min(Constants.DEPT_MIN_LENGTH).max(Constants.DEPT_MAX_LENGTH).required(),
     courseName: Joi.string().min(Constants.COURSE_MIN_LENGTH).max(Constants.COURSE_MAX_LENGTH).required(),
     courseCode: Joi.string().length(Constants.COURSECODE_LENGTH).required(),
     paperYear: Joi.number().integer().required(),
@@ -73,6 +77,7 @@ router.post('/', auth, async(req, res) => {
 
     const { error } = validate(req.body);
     if(error) {
+        console.log(error.details[0].message)
         return res.status(400).send(error.details[0].message);
     }
 
@@ -82,7 +87,25 @@ router.post('/', auth, async(req, res) => {
             courseCode: req.body.courseCode,
         });
 
-        if(!course) return res.status(400).send("No such course exists");
+        if(!course) {
+            // only executed when coursecode is typed manually
+            // if that coursecode exists then tell user that it exists
+            course = await Course.findOne({courseCode: req.body.courseCode});
+            if(course) return res.send(`Course Exists with courseCode: ${course.courseCode} and name: ${course.courseName}`)
+            
+            const user = await Admin.findOne({name: req.user.name, email: req.user.email});
+            const dept = await Department.findOne({name: req.body.department});
+
+            course = new Course({
+                courseName: req.body.courseName,
+                courseCode: req.body.courseCode,
+                department: dept._id,
+                uploadedBy: req.user.email,
+                isVerified: user ? true : false,
+            })
+            
+            await course.save();
+        }
 
         let paper = await Paper.findOne({
             course: course._id,
@@ -149,7 +172,13 @@ router.delete('/:id', auth, async(req, res) => {
 });
 
 router.get('/', async(req, res) => {
-    res.send(await Paper.find({}).limit(200));
+    res.send(await Paper.find({}).populate({path: 'course', populate: {path: 'department'}}).exec());
+});
+
+router.get('/file/download/:id', async(req, res) => {
+    const bucket = new mongodb.GridFSBucket(conn.db, { bucketName: 'uploads' });
+    const downstream = bucket.openDownloadStream(mongoose.Types.ObjectId(req.params.id))
+    downstream.pipe(res);
 });
 
 module.exports = router;
