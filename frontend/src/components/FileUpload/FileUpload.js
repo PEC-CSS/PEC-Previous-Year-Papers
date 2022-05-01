@@ -27,7 +27,7 @@ export default function FileUpload() {
 
   useEffect(() => {
     async function getDepts() {
-      const res = await axios.get('/api/department');
+      const res = await axios.get('https://pec-papers-backend.herokuapp.com/api/department');
       setDepts(res.data);
       setDepartment(res.data[0].name)
     }
@@ -37,7 +37,7 @@ export default function FileUpload() {
 
   useEffect(() => {
     async function getDeptCourses(departmentId) {
-      const res = await axios.get(`/api/course/department/${departmentId}`);
+      const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/course/department/${departmentId}`);
       res.data.push({_id: 'Enter Manually', courseName: 'Enter Manually', courseCode: 'Enter Manually'})
       setCourses(res.data);
       setCourseCode(res.data[0].courseCode);
@@ -117,11 +117,11 @@ export default function FileUpload() {
     }
 
     try {
-      let res = await axios.post('/api/paper', body, {headers: {'x-auth-token': 'Bearer '+token}});
+      let res = await axios.post('https://pec-papers-backend.herokuapp.com/api/paper', body, {headers: {'x-auth-token': 'Bearer '+token}});
       const formdata = new FormData();
       formdata.append('files', selectedFile);
       formdata.append('id', res.data._id);
-      res = await axios.post('/api/paper/upload', formdata, {headers: {'x-auth-token': 'Bearer '+token}});
+      res = await axios.post('https://pec-papers-backend.herokuapp.com/api/paper/upload', formdata, {headers: {'x-auth-token': 'Bearer '+token}});
       console.log(res);
       alert('File Uploaded Successfully')
     }

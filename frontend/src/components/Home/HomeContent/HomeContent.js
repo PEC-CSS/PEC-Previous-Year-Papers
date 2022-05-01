@@ -16,7 +16,7 @@ export default function HomeContent() {
     useEffect(() => {
         async function fetchPaper() {
             try {
-                const res = await axios.get('/api/paper');
+                const res = await axios.get('https://pec-papers-backend.herokuapp.com/api/paper');
                 setPapers(res.data);
             }
             catch(ex) {
@@ -33,7 +33,7 @@ export default function HomeContent() {
             let attachId = attachs[i]
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/paper/file/download/${attachId}`,
+                url: `https://pec-papers-backend.herokuapp.com/api/paper/file/download/${attachId}`,
                 responseType: "blob"
             })
             .then(response => {
@@ -55,7 +55,7 @@ export default function HomeContent() {
             let attachId = attachs[i]
             axios({
                 method: "GET",
-                url: `http://localhost:5000/api/paper/file/download/${attachId}`,
+                url: `https://pec-papers-backend.herokuapp.com/api/paper/file/download/${attachId}`,
                 responseType: "blob"
             })
             .then(response => {
