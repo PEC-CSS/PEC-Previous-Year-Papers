@@ -2,14 +2,12 @@ const express = require('express');
 const router = express.Router();
 const Joi = require('joi');
 const mongoose = require('mongoose');
-const config = require('config');
 const multer = require('multer');
 const {GridFsStorage} = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const path = require('path')
 const crypto = require('crypto');
 const mongodb = require('mongodb');
-const fs = require('fs');
 
 const auth = require("../../middleware/auth");
 const { Paper } = require("../../models/paper");
@@ -42,7 +40,7 @@ conn.once('open', () => {
 
 // Create storage engine
 const storage = new GridFsStorage({
-    url: config.get('mongoURI'),
+    url: process.env.mongoURI,
     options: {useUnifiedTopology: true, useNewUrlParser: true},
     file: (req, file) => {
       return new Promise((resolve, reject) => {
@@ -172,13 +170,23 @@ router.delete('/:id', auth, async(req, res) => {
 });
 
 router.get('/', async(req, res) => {
-    res.send(await Paper.find({}).populate({path: 'course', populate: {path: 'department'}}).exec());
+    try {
+        res.send(await Paper.find({}).populate({path: 'course', populate: {path: 'department'}}).exec());
+    }
+    catch(ex) {
+        res.send(ex);
+    }
 });
 
 router.get('/file/download/:id', async(req, res) => {
-    const bucket = new mongodb.GridFSBucket(conn.db, { bucketName: 'uploads' });
-    const downstream = bucket.openDownloadStream(mongoose.Types.ObjectId(req.params.id))
-    downstream.pipe(res);
+    try {
+        const bucket = new mongodb.GridFSBucket(conn.db, { bucketName: 'uploads' });
+        const downstream = bucket.openDownloadStream(mongoose.Types.ObjectId(req.params.id))
+        downstream.pipe(res);
+    }
+    catch(ex) {
+        res.send(ex);
+    }
 });
 
 module.exports = router;

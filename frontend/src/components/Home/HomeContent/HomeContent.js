@@ -18,7 +18,6 @@ export default function HomeContent() {
             try {
                 const res = await axios.get('/api/paper');
                 setPapers(res.data);
-                console.log(res.data)
             }
             catch(ex) {
                 console.log(ex);
@@ -119,7 +118,6 @@ export default function HomeContent() {
 
     return (
             <div className={classes['folderHeading']}>
-                <h1 style={{textAlign: 'center'}}>Papers</h1>
                 {screen}
             </div>
         )

@@ -2,12 +2,12 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDhVuvGVr_uEOMRMrwGwINpPWB0ezYftIc",
-    authDomain: "pec-papers.firebaseapp.com",
-    projectId: "pec-papers",
-    storageBucket: "pec-papers.appspot.com",
-    messagingSenderId: "91724236432",
-    appId: "1:91724236432:web:92e45c1b025d7129103a15"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID
 };
 
 // Initialize Firebase

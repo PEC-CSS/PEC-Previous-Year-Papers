@@ -123,6 +123,7 @@ export default function FileUpload() {
       formdata.append('id', res.data._id);
       res = await axios.post('/api/paper/upload', formdata, {headers: {'x-auth-token': 'Bearer '+token}});
       console.log(res);
+      alert('File Uploaded Successfully')
     }
     catch(ex) {
       console.log(ex);

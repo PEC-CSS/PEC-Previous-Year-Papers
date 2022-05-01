@@ -1,4 +1,4 @@
-const {admin} = require('../config/firebase-config')
+const {admin} = require('../firebase-config')
 
 module.exports = async function (req,res,next){
     const token = req.header('x-auth-token')
