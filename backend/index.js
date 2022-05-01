@@ -29,4 +29,4 @@ app.use('/api/course', course);
 app.use('/api/department', department);
 app.use('/api/paper', paper);
 
-app.listen(5000, () => console.log('Server started at port: 5000'));
+app.listen(process.env.PORT || 5000, () => console.log('Server started at port: 5000'));
