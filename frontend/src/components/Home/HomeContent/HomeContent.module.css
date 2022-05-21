@@ -9,3 +9,33 @@
     flex-wrap: wrap;
     padding-top: 15px;
 }
+.Folder{
+    display: flex;
+    padding:10px;
+    margin: 10px;
+    border-radius: 5px;
+    box-shadow:1px 1px 2px 0px rgb(222, 221, 221);
+}
+.FolderIcon{
+    color: rgb(82,82,82);
+    padding-right: 10px;
+}
+.Folder:hover{
+    background-color: rgb(222, 221, 221);
+    cursor: pointer;
+}
+.Folders{
+    display: grid;
+    width:95%;
+    padding-top: 50px;
+    margin: auto;
+    grid-template-columns: repeat(4, 1fr);
+    
+}
+.semHeader{
+    color:rgb(85, 85, 85) ;
+    display: flex;
+    justify-content: center;
+    box-shadow:1px 1px 2px 0px rgb(222, 221, 221);
+    margin: auto;
+}
