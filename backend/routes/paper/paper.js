@@ -177,6 +177,14 @@ router.get('/', async(req, res) => {
         res.send(ex);
     }
 });
+router.get('/:dept/:yr/:sem', async(req, res) => {
+    try {
+        res.send(await Paper.find({}).populate({path: 'course', populate: {path: 'department'}}).exec());
+    }
+    catch(ex) {
+        res.send(ex);
+    }
+});
 
 router.get('/file/download/:id', async(req, res) => {
     try {
