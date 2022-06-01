@@ -33,6 +33,24 @@ router.get('/:id', async(req, res) => {
     }
 });
 
+// id can be course name or course code
+router.get('/search/:param', async(req, res) => {
+    try {
+        let courses = await Course.find({courseCode: req.params.param});
+
+        if(courses) {
+            return res.send(courses);
+        }
+
+        courses = await Course.find({courseName: req.params.param});
+
+        res.send(courses);
+    }
+    catch(ex) {
+        res.send(ex.message);
+    }
+});
+
 router.get('/department/:id', async(req, res) => {
     try {
         res.send(await Course.find({department: req.params.id}).select({'_id':1, 'courseName':1, 'courseCode':1}));
