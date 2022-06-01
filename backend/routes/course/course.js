@@ -26,7 +26,6 @@ router.get('/', async(req, res) => {
 
 router.get('/:id', async(req, res) => {
     try {
-        console.log(req.params.id)
         res.send(await Course.findOne({_id: req.params.id}));
     }
     catch(ex) {
