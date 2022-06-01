@@ -177,6 +177,16 @@ router.get('/', async(req, res) => {
         res.send(ex);
     }
 });
+
+router.get('/course/:id', async(req, res) => {
+    try {
+        res.send(await Paper.find({course: req.params.id}).populate({path: 'course', populate: {path: 'department'}}).exec());
+    }
+    catch(ex) {
+        res.send(ex);
+    }
+});
+
 router.get('/:dept/:yr/:sem', async(req, res) => {
     try {
         res.send(await Paper.find({}).populate({path: 'course', populate: {path: 'department'}}).exec());
