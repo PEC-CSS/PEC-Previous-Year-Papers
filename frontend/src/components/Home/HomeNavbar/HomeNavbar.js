@@ -1,21 +1,51 @@
 import React, { useEffect, useState } from 'react';
 import classes from './HomeNavbar.module.css';
 import SearchIcon from '@mui/icons-material/Search';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import FilterListIcon from '@mui/icons-material/FilterList';
 import Login from '../../Login/Login.js';
-import useDebounce from './useDebounce';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const HomeNavbar = () => {
-    const [queryVal, setqueryVal] = useState("");
+    const navigate = useNavigate()
     const [showOptions, setshowOptions] = useState(false);
-    const [options, setoptions] = useState(["kuch nahi hai bhai idhar", "popo", "asa", "sas"]);
-    const debounced = useDebounce(queryVal)
+    const [list, setList] = useState({});
+    const [options, setOptions] = useState([])
     useEffect(() => {
-        /*
-        api call to be made
-        */
-        console.log(debounced)
-    }, [debounced])
+        async function fetchCoursesQuery() {
+            try {
+                const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/course/search/courseName`);
+                setList(res.data)
+            }
+            catch (ex) {
+                console.log(ex);
+            }
+
+        }
+        fetchCoursesQuery()
+    }, [])
+
+    const handleChange = (prop) => {
+        let arr = Object.keys(list)
+        if (prop === "") {
+            setOptions(arr)
+        } else {
+            let temp = []
+            arr.forEach((element) => {
+                if (element.includes(prop.toUpperCase())) {
+                    temp.push(element)
+                }
+            })
+            setOptions(temp)
+        }
+    }
+    const handleOptionSelect = (prop) => {
+        document.querySelector("input").value = prop
+        setshowOptions(false)
+        navigate("/Courses/Papers", { state: { course: { _id: list[prop] } } })
+    }
+
+
 
     return (
         <div>
@@ -29,31 +59,36 @@ const HomeNavbar = () => {
                         <input
                             type='text'
                             onClick={() => setshowOptions(!showOptions)}
-                            onChange={e => setqueryVal(e.target.value)}
-                            placeholder='Search in papers'
+                            onChange={e => handleChange(e.target.value)}
+                            placeholder="Search in Papers"
                         />
 
-                        <ExpandMoreIcon />
+                        <FilterListIcon />
                     </div>
-                    <ul className={classes['searchOptions']}>
-                        {showOptions && options.map((e) => {
-                            return (
-                                <li key={e}>
-                                    {e}
-                                </li>
-                            )
-                        })}
-                    </ul>
+                    <div className={classes['header__searchOptionsContainer']}>
+                        {showOptions &&
+                            < ul className={classes['header__searchOptions']}>
+                                {options.map((prop) => (
+                                    <li key={prop} onClick={() => handleOptionSelect(prop)}>
+                                        {prop}
+                                    </li>
+                                )
+                                )}
+                            </ul>
+                        }
+                    </div>
                 </div>
                 <div className={classes['header__icons']}>
                     <Login />
                 </div>
             </div>
-            {showOptions && (
-                <div onClick={() => setshowOptions(!showOptions)} className={classes['overlay']}>
-                </div>
-            )}
-        </div>
+            {
+                showOptions && (
+                    <div onClick={() => setshowOptions(!showOptions)} className={classes['overlay']}>
+                    </div>
+                )
+            }
+        </div >
     )
 }
 

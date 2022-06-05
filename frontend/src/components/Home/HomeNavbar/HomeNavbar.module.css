@@ -28,12 +28,28 @@
   align-items: center;
   padding: 0 8px;
 }
-.searchOptions{
-  margin-top: 1px;
+.header__searchOptionsContainer{
+  display: flex;
+  margin-top: 0px;
+  
   padding: 0px;
   width: 66%;
   z-index: 6;
+  height: 500px;
+  justify-content: flex-start;
+}
+
+.header__searchOptions{
+  padding: 0;
+  margin: 0;
+  max-height: 100%;
+  width: 100%;
+  overflow-y: scroll;
   background-color: white;
+  box-shadow:1px 1px 2px 1px rgb(222, 221, 221);
+}
+.header__searchOptions:hover{
+  cursor: pointer;
 }
 .overlay{
   position: absolute;
@@ -76,7 +92,7 @@
 .header .MuiSvgIcon-root:hover {
   border-radius: 50%;
   background-color: rgb(236, 235, 235);
-  cursor: pointer;
+  cursor: text;
 }
 
 .header__icons {

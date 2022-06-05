@@ -5,10 +5,10 @@ import HomeContent from './HomeContent/HomeContent';
 
 const Home = props => (
   <React.Fragment>
-      <HomeNavbar />
-      <div style={{ display: "flex" }}>
-        <HomeContent />
-      </div>
+    <HomeNavbar />
+    <div style={{ display: "flex" }}>
+      <HomeContent />
+    </div>
   </React.Fragment>
 );
 

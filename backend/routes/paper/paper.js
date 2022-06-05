@@ -3,7 +3,7 @@ const router = express.Router();
 const Joi = require('joi');
 const mongoose = require('mongoose');
 const multer = require('multer');
-const {GridFsStorage} = require('multer-gridfs-storage');
+const { GridFsStorage } = require('multer-gridfs-storage');
 const Grid = require('gridfs-stream');
 const path = require('path')
 const crypto = require('crypto');
@@ -34,47 +34,48 @@ const conn = mongoose.connection;
 let gfs;
 
 conn.once('open', () => {
-  gfs = Grid(conn.db, mongoose.mongo);
-  gfs.collection('uploads');
+    gfs = Grid(conn.db, mongoose.mongo);
+    gfs.collection('uploads');
 });
 
 // Create storage engine
 const storage = new GridFsStorage({
     url: process.env.mongoURI,
-    options: {useUnifiedTopology: true, useNewUrlParser: true},
+    options: { useUnifiedTopology: true, useNewUrlParser: true },
     file: (req, file) => {
-      return new Promise((resolve, reject) => {
-        crypto.randomBytes(16, (err, buf) => {
-          if (err) {
-            return reject(err);
-          }
-          const filename = buf.toString('hex') + path.extname(file.originalname);
-          const fileInfo = {
-            filename: filename,
-            bucketName: 'uploads'
-          };
-          resolve(fileInfo);
+        return new Promise((resolve, reject) => {
+            crypto.randomBytes(16, (err, buf) => {
+                if (err) {
+                    return reject(err);
+                }
+                const filename = buf.toString('hex') + path.extname(file.originalname);
+                const fileInfo = {
+                    filename: filename,
+                    bucketName: 'uploads'
+                };
+                resolve(fileInfo);
+            });
         });
-      });
     }
 });
 
-upload = multer({ storage: storage, fileFilter: (req, file, cb) => {
-    if (file.mimetype.split("/")[1] === "pdf") {
-      cb(null, true);
-    } 
-    else {
-      cb(new Error("Not a PDF File!!"), false);
+upload = multer({
+    storage: storage, fileFilter: (req, file, cb) => {
+        if (file.mimetype.split("/")[1] === "pdf") {
+            cb(null, true);
+        }
+        else {
+            cb(new Error("Not a PDF File!!"), false);
+        }
     }
-  }
 });
 
-router.post('/', auth, async(req, res) => {
+router.post('/', auth, async (req, res) => {
     req.body.paperSemester = parseInt(req.body.paperSemester);
     req.body.paperYear = parseInt(req.body.paperYear);
 
     const { error } = validate(req.body);
-    if(error) {
+    if (error) {
         console.log(error.details[0].message)
         return res.status(400).send(error.details[0].message);
     }
@@ -85,14 +86,14 @@ router.post('/', auth, async(req, res) => {
             courseCode: req.body.courseCode,
         });
 
-        if(!course) {
+        if (!course) {
             // only executed when coursecode is typed manually
             // if that coursecode exists then tell user that it exists
-            course = await Course.findOne({courseCode: req.body.courseCode});
-            if(course) return res.send(`Course Exists with courseCode: ${course.courseCode} and name: ${course.courseName}`)
-            
-            const user = await Admin.findOne({name: req.user.name, email: req.user.email});
-            const dept = await Department.findOne({name: req.body.department});
+            course = await Course.findOne({ courseCode: req.body.courseCode });
+            if (course) return res.send(`Course Exists with courseCode: ${course.courseCode} and name: ${course.courseName}`)
+
+            const user = await Admin.findOne({ name: req.user.name, email: req.user.email });
+            const dept = await Department.findOne({ name: req.body.department });
 
             course = new Course({
                 courseName: req.body.courseName,
@@ -101,7 +102,7 @@ router.post('/', auth, async(req, res) => {
                 uploadedBy: req.user.email,
                 isVerified: user ? true : false,
             })
-            
+
             await course.save();
         }
 
@@ -112,8 +113,8 @@ router.post('/', auth, async(req, res) => {
             paperType: req.body.paperType,
         });
 
-        if(paper) {
-            if(paper.paperType == "Mid-Sem" || paper.paperType == "End-Sem") {
+        if (paper) {
+            if (paper.paperType == "Mid-Sem" || paper.paperType == "End-Sem") {
                 return res.status(400).send('Paper already exists!!');
             }
         }
@@ -130,33 +131,33 @@ router.post('/', auth, async(req, res) => {
         await paper.save();
         res.send(paper);
     }
-    catch(ex) {
+    catch (ex) {
         res.status(400).send(ex.message);
     }
 });
 
-router.post('/upload', auth, upload.array('files'), async(req, res) => {
+router.post('/upload', auth, upload.array('files'), async (req, res) => {
     try {
-        await Paper.updateOne({_id: req.body.id}, {$set: {attachments: req.files.map(el => el.id)}});
-        res.send(await Paper.findOne({_id: req.body.id}));
+        await Paper.updateOne({ _id: req.body.id }, { $set: { attachments: req.files.map(el => el.id) } });
+        res.send(await Paper.findOne({ _id: req.body.id }));
     }
-    catch(ex) {
+    catch (ex) {
         res.status(400).send(ex.message);
     }
 });
 
-router.delete('/:id', auth, async(req, res) => {
-    try{
-        const paper = await Paper.findOne({_id: req.params.id});
-        if(!paper) return res.status(400).send("No paper found");
-        
+router.delete('/:id', auth, async (req, res) => {
+    try {
+        const paper = await Paper.findOne({ _id: req.params.id });
+        if (!paper) return res.status(400).send("No paper found");
+
         const attachments = paper.attachments;
 
         // TODO: should use transactions using FAWN
-        await paper.deleteOne({_id: req.params.id});
-        
+        await paper.deleteOne({ _id: req.params.id });
+
         const bucket = new mongodb.GridFSBucket(conn.db, { bucketName: 'uploads' });
-        
+
         // TODO: should use some better way than this
         for (var id in attachments) {
             await bucket.delete(attachments[id]);
@@ -164,36 +165,36 @@ router.delete('/:id', auth, async(req, res) => {
 
         res.send(paper);
     }
-    catch(ex) {
+    catch (ex) {
         res.send(ex);
     }
 });
 
-router.get('/', async(req, res) => {
+router.get('/', async (req, res) => {
     try {
-        res.send(await Paper.find({}).populate({path: 'course', populate: {path: 'department'}}).exec());
+        res.send(await Paper.find({}).populate({ path: 'course', populate: { path: 'department' } }).exec());
     }
-    catch(ex) {
+    catch (ex) {
         res.send(ex);
     }
 });
 
-router.get('/course/:id', async(req, res) => {
+router.get('/course/:id', async (req, res) => {
     try {
-        res.send(await Paper.find({course: req.params.id}).populate({path: 'course', populate: {path: 'department'}}).exec());
+        res.send(await Paper.find({ course: req.params.id }).populate({ path: 'course', populate: { path: 'department' } }).exec());
     }
-    catch(ex) {
+    catch (ex) {
         res.send(ex);
     }
 });
 
-router.get('/file/download/:id', async(req, res) => {
+router.get('/file/download/:id', async (req, res) => {
     try {
         const bucket = new mongodb.GridFSBucket(conn.db, { bucketName: 'uploads' });
         const downstream = bucket.openDownloadStream(mongoose.Types.ObjectId(req.params.id))
         downstream.pipe(res);
     }
-    catch(ex) {
+    catch (ex) {
         res.send(ex);
     }
 });
