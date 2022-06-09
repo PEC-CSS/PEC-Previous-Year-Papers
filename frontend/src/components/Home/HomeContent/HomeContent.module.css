@@ -39,3 +39,24 @@
     box-shadow:1px 1px 2px 0px rgb(222, 221, 221);
     margin: auto;
 }
+
+.paperNotFound{
+    display: flex;
+    justify-content: space-between;
+}
+.paperNotFound__heading{
+    flex: 1;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+}
+.paperNotFound__contribute{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.paperNotFound__icon{
+    padding-top: 50px;
+    display:flex;
+    justify-content: center;
+}

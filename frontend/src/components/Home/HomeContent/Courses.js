@@ -16,7 +16,16 @@ function Courses() {
         async function fetchCourses() {
             try {
                 const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/course/department/${selectedDeptId}`);
-                setcourses(res.data);
+                setcourses(res.data.sort((a, b) => {
+                    if (a.courseName < b.courseName) {
+                        return -1
+                    } else if (a.courseName > b.courseName) {
+                        return 1
+                    } else {
+                        return 0
+                    }
+                }));
+
             }
             catch (ex) {
                 console.log(ex);
@@ -41,7 +50,7 @@ function Courses() {
                 {courses.map(course => {
                     return (
 
-                        <div onClick={() => handleClick(course)} className={classes['Folder']}>
+                        <div key={course.courseName} onClick={() => handleClick(course)} className={classes['Folder']}>
                             <FolderIcon className={classes["FolderIcon"]} />
                             {course.courseName}
                         </div>
