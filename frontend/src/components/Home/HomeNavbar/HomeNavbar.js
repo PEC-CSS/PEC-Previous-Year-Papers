@@ -23,11 +23,12 @@ const HomeNavbar = () => {
 
         }
         fetchCoursesQuery()
+        handleChange("")
     }, [])
 
     const handleChange = (prop) => {
         let arr = Object.keys(list)
-        if (prop === "") {
+        if (!prop.length) {
             setOptions(arr)
         } else {
             let temp = []
@@ -61,6 +62,8 @@ const HomeNavbar = () => {
                             onClick={() => setshowOptions(!showOptions)}
                             onChange={e => handleChange(e.target.value)}
                             placeholder="Search in Papers"
+                            autoFocus="on"
+                            autoComplete='on'
                         />
 
                         <FilterListIcon />

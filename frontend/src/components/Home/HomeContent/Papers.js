@@ -12,10 +12,13 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
+import CircularProgress from '@mui/material/CircularProgress';
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
 
 function Papers() {
     const selectedPaperId = useLocation().state.course._id;
     const [papers, setPapers] = useState([]);
+    const [response, setResponse] = useState(false)
 
     const [loader, setloader] = useState("100%");
     useEffect(() => {
@@ -23,6 +26,8 @@ function Papers() {
             try {
                 const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/paper/course/${selectedPaperId}`);
                 setPapers(res.data)
+                setResponse(true)
+
             }
             catch (ex) {
                 console.log(ex);
@@ -83,7 +88,34 @@ function Papers() {
     }
 
 
-    let screen = 'LOADING';
+    let screen = (
+        <Box sx={{ display: 'flex' }}>
+            <CircularProgress />
+            <div>
+                LOADING
+            </div>
+        </Box>
+    )
+    if (response && papers.length === 0) {
+        screen = (
+            <div>
+                <div className={classes['paperNotFound']} >
+                    <div className={classes['paperNotFound__heading']}>
+                        No Paper available
+                    </div>
+                    <div className={classes['paperNotFound__contribute']} >
+                        <ArrowUpwardIcon />
+                        <div style={{ paddingRight: "20px" }}>
+                            Be the first one to contribute !
+                        </div>
+                    </div>
+                </div>
+                <div className={classes['paperNotFound__icon']}>
+                    <img height={"350px"} src="https://cdn0.iconfinder.com/data/icons/web-development-35/64/404-error-message-server-not-found-512.png" />
+                </div>
+            </div>
+        )
+    }
 
     if (papers.length) {
         screen =
