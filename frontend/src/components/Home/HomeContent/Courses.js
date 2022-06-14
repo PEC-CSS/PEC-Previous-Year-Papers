@@ -15,7 +15,7 @@ function Courses() {
     useEffect(() => {
         async function fetchCourses() {
             try {
-                const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/course/department/${selectedDeptId}`);
+                const res = await axios.get(`https://papers-pec-backend.herokuapp.com/api/course/department/${selectedDeptId}`);
                 setcourses(res.data.sort((a, b) => {
                     if (a.courseName < b.courseName) {
                         return -1

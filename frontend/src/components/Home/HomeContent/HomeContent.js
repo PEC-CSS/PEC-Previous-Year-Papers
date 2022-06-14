@@ -29,7 +29,7 @@ export default function HomeContent() {
         */
         async function fetchDepartments() {
             try {
-                const res = await axios.get('https://pec-papers-backend.herokuapp.com/api/department');
+                const res = await axios.get('https://papers-pec-backend.herokuapp.com/api/department');
                 setDepartment(res.data);
             }
             catch (ex) {

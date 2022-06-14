@@ -6,7 +6,6 @@ import classes from './HomeContent.module.css';
 import LinearProgress from '@mui/material/LinearProgress';
 import { Box, Grid } from '@mui/material';
 import Typography from '@mui/material/Typography';
-import { findDOMNode } from 'react-dom';
 import FileSaver from 'file-saver';
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -24,7 +23,7 @@ function Papers() {
     useEffect(() => {
         async function fetchPaper() {
             try {
-                const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/paper/course/${selectedPaperId}`);
+                const res = await axios.get(`https://papers-pec-backend.herokuapp.com/api/paper/course/${selectedPaperId}`);
                 setPapers(res.data)
                 setResponse(true)
 
@@ -111,7 +110,7 @@ function Papers() {
                     </div>
                 </div>
                 <div className={classes['paperNotFound__icon']}>
-                    <img height={"350px"} src="https://cdn0.iconfinder.com/data/icons/web-development-35/64/404-error-message-server-not-found-512.png" />
+                    <img alt="not found" height={"350px"} src="https://cdn0.iconfinder.com/data/icons/web-development-35/64/404-error-message-server-not-found-512.png" />
                 </div>
             </div>
         )

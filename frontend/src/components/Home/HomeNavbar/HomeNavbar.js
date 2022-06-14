@@ -14,7 +14,7 @@ const HomeNavbar = () => {
     useEffect(() => {
         async function fetchCoursesQuery() {
             try {
-                const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/course/search/courseName`);
+                const res = await axios.get(`https://papers-pec-backend.herokuapp.com/api/course/search/courseName`);
                 setList(res.data)
             }
             catch (ex) {
@@ -23,7 +23,6 @@ const HomeNavbar = () => {
 
         }
         fetchCoursesQuery()
-        handleChange("")
     }, [])
 
     const handleChange = (prop) => {
