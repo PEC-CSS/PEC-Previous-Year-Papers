@@ -6,10 +6,10 @@ import { UserContext } from '../../providers/UserProvider';
 import Dropdown from "./Dropdown/Dropdown";
 
 export default function FileUpload() {
-  const {user, token} = useContext(UserContext);
+  const { token } = useContext(UserContext);
 
   const paperTypes = ['Mid-Sem', 'End-Sem', 'Assignment', 'Other'];
-  const paperSemesters = [1,2,3,4,5,6,7,8];
+  const paperSemesters = [1, 2, 3, 4, 5, 6, 7, 8];
   const paperProgrammes = ["B.Tech", "M.Tech", "Ph.D"];
 
   const [showUploadForm, setShowUploadForm] = useState(false);
@@ -27,7 +27,7 @@ export default function FileUpload() {
 
   useEffect(() => {
     async function getDepts() {
-      const res = await axios.get('https://pec-papers-backend.herokuapp.com/api/department');
+      const res = await axios.get('https://papers-pec-backend.herokuapp.com/api/department');
       setDepts(res.data);
       setDepartment(res.data[0].name)
     }
@@ -37,21 +37,21 @@ export default function FileUpload() {
 
   useEffect(() => {
     async function getDeptCourses(departmentId) {
-      const res = await axios.get(`https://pec-papers-backend.herokuapp.com/api/course/department/${departmentId}`);
-      res.data.push({_id: 'Enter Manually', courseName: 'Enter Manually', courseCode: 'Enter Manually'})
+      const res = await axios.get(`https://papers-pec-backend.herokuapp.com/api/course/department/${departmentId}`);
+      res.data.push({ _id: 'Enter Manually', courseName: 'Enter Manually', courseCode: 'Enter Manually' })
       setCourses(res.data);
       setCourseCode(res.data[0].courseCode);
       setCourseName(res.data[0].courseName);
     }
 
-    if(department) {
+    if (department) {
       const dept = depts.find(el => el.name === department);
       getDeptCourses(dept._id);
     }
   }, [department])
 
   const [selectedFile, setselectedFile] = useState();
-  
+
   const handleDepartment = (event) => {
     event.preventDefault();
     setDepartment(event.target.value);
@@ -61,7 +61,7 @@ export default function FileUpload() {
     event.preventDefault();
     setCourseCode(event.target.value);
 
-    if(event.target.value === 'Enter Manually') {
+    if (event.target.value === 'Enter Manually') {
       setCourseName('');
     }
     else {
@@ -117,19 +117,19 @@ export default function FileUpload() {
     }
 
     try {
-      let res = await axios.post('https://pec-papers-backend.herokuapp.com/api/paper', body, {headers: {'x-auth-token': 'Bearer '+token}});
+      let res = await axios.post('https://pec-papers-backend.herokuapp.com/api/paper', body, { headers: { 'x-auth-token': 'Bearer ' + token } });
       const formdata = new FormData();
       formdata.append('files', selectedFile);
       formdata.append('id', res.data._id);
-      res = await axios.post('https://pec-papers-backend.herokuapp.com/api/paper/upload', formdata, {headers: {'x-auth-token': 'Bearer '+token}});
+      res = await axios.post('https://pec-papers-backend.herokuapp.com/api/paper/upload', formdata, { headers: { 'x-auth-token': 'Bearer ' + token } });
       console.log(res);
       alert('File Uploaded Successfully')
     }
-    catch(ex) {
+    catch (ex) {
       console.log(ex);
     }
   }
-  
+
   return (
     <div>
       <div className={classes["newFile"]}>
@@ -192,7 +192,7 @@ export default function FileUpload() {
                   </div>
                   <div className={classes['fileUploader']}>
                     <input label="please upload the file here" type="file" name="file" onChange={changeFileHandler} />
-                    <Button variant="contained" color="error" style={{marginTop: '40px'}} onClick={handleFileSubmission}>Upload</Button>
+                    <Button variant="contained" color="error" style={{ marginTop: '40px' }} onClick={handleFileSubmission}>Upload</Button>
                   </div>
                 </div>
               </div>
