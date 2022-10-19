@@ -4,6 +4,8 @@ import { Button } from '@mui/material';
 import { UserContext } from '../../providers/UserProvider';
 import FileUpload from '../FileUpload/FileUpload';
 
+
+
 const Login = () => {
     const user = useContext(UserContext);
 
@@ -22,11 +24,14 @@ const Login = () => {
         )
     } else {
         return (
+            <div>
+               
             <div onClick={signInWithGoogle}>
+               
                 <Button className='signinButton' style={{ backgroundColor: "red" }} variant="contained" >
                     Upload File
                 </Button>
-            </div>
+            </div></div>
         )
     }
 
