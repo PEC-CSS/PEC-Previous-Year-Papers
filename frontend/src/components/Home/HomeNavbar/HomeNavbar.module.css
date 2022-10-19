@@ -61,7 +61,7 @@
 .header .MuiSvgIcon-root:hover {
   border-radius: 50%;
   background-color: rgb(236, 235, 235);
-  cursor: pointer;
+  cursor: text;
 }
 
 .header__icons {
