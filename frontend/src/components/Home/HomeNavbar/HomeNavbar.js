@@ -3,6 +3,8 @@ import classes from './HomeNavbar.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Login from '../../Login/Login.js';
+import { Button } from '@mui/material';
+import {Link} from "react-router-dom";
 
 const HomeNavbar = () => {
     return (
@@ -19,6 +21,9 @@ const HomeNavbar = () => {
                     </div>
                 </div>
                 <div className={classes['header__icons']}>
+                <Link style={{textDecoration: 'none'}} to="/"> <Button className='signinButton ' style={{ backgroundColor: "red", marginRight:"10px"}} variant="contained" >
+                    Home
+                </Button></Link>
                     <Login />
                 </div>
             </div>
