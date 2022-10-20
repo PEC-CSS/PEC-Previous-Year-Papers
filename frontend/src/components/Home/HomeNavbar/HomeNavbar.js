@@ -3,13 +3,16 @@ import classes from './HomeNavbar.module.css';
 import SearchIcon from '@mui/icons-material/Search';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Login from '../../Login/Login.js';
+import { Link } from "react-router-dom";
 
 const HomeNavbar = () => {
     return (
         <div>
             <div className={classes['header']}>
                 <div className={classes['header__logo']}>
-                    <span>PEC PAPERS</span>
+                    <Link to={"/"}>
+                        <span>PEC PAPERS</span>
+                    </Link>
                 </div>
                 <div className={classes['header__searchContainer']}>
                     <div className={classes['header__searchBar']}>
@@ -21,8 +24,8 @@ const HomeNavbar = () => {
                 <div className={classes['header__icons']}>
                     <Login />
                 </div>
-            </div>
-        </div>
+            </div >
+        </div >
     )
 }
 
