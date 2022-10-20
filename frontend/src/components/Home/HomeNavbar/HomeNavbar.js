@@ -21,7 +21,7 @@ const HomeNavbar = () => {
                     </div>
                 </div>
                 <div className={classes['header__icons']}>
-                <Link style={{textDecoration: 'none'}} to="/home"> <Button className='signinButton ' style={{ backgroundColor: "red", marginRight:"10px"}} variant="contained" >
+                <Link style={{textDecoration: 'none'}} to="/"> <Button className='signinButton ' style={{ backgroundColor: "red", marginRight:"10px"}} variant="contained" >
                     Home
                 </Button></Link>
                     <Login />
