@@ -50,7 +50,7 @@ const HomeNavbar = () => {
     return (
         <div>
             <div className={classes['header']}>
-                <Link className={classes['header__logo']}>
+                <Link to={"/"} className={classes['header__logo']}>
                     <span>PEC PAPERS</span>
                 </Link>
                 <div className={classes['header__searchContainer']}>
