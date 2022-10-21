@@ -5,6 +5,9 @@ import FilterListIcon from '@mui/icons-material/FilterList';
 import Login from '../../Login/Login.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
+import {Link} from "react-router-dom";
+
 
 const HomeNavbar = () => {
     const navigate = useNavigate()
@@ -81,6 +84,9 @@ const HomeNavbar = () => {
                     </div>
                 </div>
                 <div className={classes['header__icons']}>
+                <Link style={{textDecoration: 'none'}} to="/"> <Button className='signinButton ' style={{ backgroundColor: "red", marginRight:"10px"}} variant="contained" >
+                    Home
+                </Button></Link>
                     <Login />
                 </div>
             </div>
