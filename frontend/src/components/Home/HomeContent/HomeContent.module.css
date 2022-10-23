@@ -82,3 +82,13 @@
         cursor: pointer;
     }
 }
+@media only screen and (max-width: 600px) {
+    .Folders{
+        display: flex;
+        flex-direction: column;
+    }
+    .paperNotFound {
+        flex-direction: column;
+        
+    }
+  }
