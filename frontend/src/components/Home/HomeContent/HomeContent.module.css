@@ -73,11 +73,11 @@
 @media (prefers-color-scheme: dark) {
 
     .Folder {
-        box-shadow: 1px 1px 2px 1px rgb(222 221 221);
+        box-shadow: 1px 1px 2px 0px rgba(222, 221, 221, 0.208);
     }
 
     .Folder:hover {
-        background-color: #ff0100;
+        background-color: lightgray;
         color: #000000;
         cursor: pointer;
     }

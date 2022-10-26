@@ -11,7 +11,7 @@ function App() {
 
   return (
     <UserProvider>
-      <BrowserRouter>
+      <BrowserRouter basename='/PEC-Previous-Year-Papers'>
         <HomeNavbar />
         <Routes>
           <Route path='/' element={<HomeContent />} />
