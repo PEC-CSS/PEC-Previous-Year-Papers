@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/papers/static/css/main.744ba796.css",
-    "main.js": "/papers/static/js/main.678f110e.js",
-    "index.html": "/papers/index.html",
-    "main.744ba796.css.map": "/papers/static/css/main.744ba796.css.map",
-    "main.678f110e.js.map": "/papers/static/js/main.678f110e.js.map"
+    "main.css": "/PEC-Previous-Year-Papers/static/css/main.744ba796.css",
+    "main.js": "/PEC-Previous-Year-Papers/static/js/main.678f110e.js",
+    "index.html": "/PEC-Previous-Year-Papers/index.html",
+    "main.744ba796.css.map": "/PEC-Previous-Year-Papers/static/css/main.744ba796.css.map",
+    "main.678f110e.js.map": "/PEC-Previous-Year-Papers/static/js/main.678f110e.js.map"
   },
   "entrypoints": [
     "static/css/main.744ba796.css",
